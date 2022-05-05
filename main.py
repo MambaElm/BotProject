@@ -3,6 +3,7 @@ import logging
 from telegram.ext import Updater, MessageHandler, Filters, ConversationHandler
 from telegram import ReplyKeyboardMarkup
 from telegram.ext import CommandHandler
+from random import shuffle
 
 reply_keyboard = [['/start', '/help'],
                   ['/rules', '/play']]
@@ -48,11 +49,26 @@ def newgame(update, context):
         update.message.reply_text(h, reply_markup=markup)
 
 
+def startkiller(update, context, b):
+    a = data['games'][b]['players']
+    shuffle(a)
+    la = len(a)
+    for i in range(la):
+        k = (i+1)%la
+        print(data, k)
+        update.message.chat.id = int(a[i][0])
+        h = 'Игра с идентификатором '+b+' началась\nВаша первая жертва имеет пользовательский идентификатор @'+a[k][1]
+        update.message.reply_text(h, reply_markup=markup)
+
+
+
+
 def startgame(update, context):
     a = str(update.message.chat.id)
     b = str(update.message.text)[11:]
     if b in data['games']:
         if data['games'][b]['master'] == a:
+            startkiller(update, context, b)
             update.message.reply_text("Игра успешно начинается",
                                       reply_markup=markup)
         else:
