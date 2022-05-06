@@ -7,7 +7,7 @@ from random import shuffle
 
 reply_keyboard = [['/start', '/help'],
                   ['/rules', '/play']]
-data = {"games": {"1": {'players': []}}}
+data = {"games": {}}
 markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False)
 
 # Запускаем логгирование
@@ -57,7 +57,7 @@ def startkiller(update, context, b):
         k = (i+1)%la
         print(data, k)
         update.message.chat.id = int(a[i][0])
-        h = 'Игра с идентификатором '+b+' началась\nВаша первая жертва имеет пользовательский идентификатор @'+a[k][1]
+        h = 'Игра с идентификатором '+b+' началась\nВаша первая жертва имеет пользовательский идентификатор @'+a[k][1]+' и имя '+a[k][2]
         update.message.reply_text(h, reply_markup=markup)
 
 
@@ -105,7 +105,7 @@ def play(update, context):
             update.message.reply_text("Вы уже играете в эту игру", reply_markup=markup)
         else:
             data['games'][b]['listplayers'].append(a)
-            data['games'][b]['players'].append((a, s, 0))
+            data['games'][b]['players'].append((a, s, s1, 0))
             update.message.reply_text("С присоединением к игре", reply_markup=markup)
     else:
         update.message.reply_text(
