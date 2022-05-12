@@ -46,15 +46,16 @@ def newgame(update, context):
     if a not in data:
         data[a] = {'name': s1, 'username': s}
     b = str(update.message.text)[9:]
-    if b in data['games']:
-        update.message.reply_text("Игра с таким идентификатором уже есть, выберите другой идентификатор",
-                                  reply_markup=markup)
-    else:
-        data['games'][b] = {'master': a, 'players': [], 'listplayers': []}
-        h = "Игра успешно создана\nИдентификатор игры: " + b
-        update.message.reply_text(h, reply_markup=markup)
-    with open('data.json', 'w') as f:
-        json.dump(data, f)
+    if b != "":
+        if b in data['games']:
+            update.message.reply_text("Игра с таким идентификатором уже есть, выберите другой идентификатор",
+                                      reply_markup=markup)
+        else:
+            data['games'][b] = {'master': a, 'players': [], 'listplayers': []}
+            h = "Игра успешно создана\nИдентификатор игры: " + b
+            update.message.reply_text(h, reply_markup=markup)
+        with open('data.json', 'w') as f:
+            json.dump(data, f)
 
 
 # Распределение жертв и их рассылка
@@ -132,7 +133,7 @@ def rules(update, context):
 # Команда боту помощи со списком основных команд
 def help(update, context):
     update.message.reply_text(
-        "Бот может выполнить несколько команд:\n/rules — узнать правила игры киллер\n/newgame * — создать игру с уникальным идентификатором *\n/startkillergame * — начать игру киллер с идентификаторм *, команда работает только у создателя игры\n/play * — участвовать в игре с идентификатором *",
+        "Бот может выполнить несколько команд:\n/rules — узнать правила игры киллер\n/newgame * — создать игру с уникальным идентификатором *\n/startgame * — начать игру киллер с идентификаторм *, команда работает только у создателя игры\n/play * — участвовать в игре с идентификатором *",
         reply_markup=markup)
 
 
